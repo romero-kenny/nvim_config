@@ -112,8 +112,6 @@ require("nvim-treesitter.configs").setup({
 })
 
 ---lsp setup
-
-
 ----lsp keybindings
 local cmp = require("cmp")
 cmp.setup({
