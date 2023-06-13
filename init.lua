@@ -14,6 +14,10 @@ vim.opt.updatetime = 50
 vim.keymap.set("n", "<leader>fe", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>bc", vim.cmd.close)
 vim.keymap.set("n", "<leader>lf", vim.cmd.LspZeroFormat)
+vim.keymap.set("n", "q", "<nop>")
+vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("n", "j", "gj")
+vim.keymap.set("n", "k", "gk")
 
 --setups lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -138,5 +142,11 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
 	vim.keymap.set("n", "<leader>vrn", function() vim.lsp.rename() end, opts)
 end)
+
+---typst config changes
+require("lspconfig").typst_lsp.setup({
+	single_file_support = true,
+	filetypes = {"*.typ"},
+})
 
 lsp.setup() --activates lsp
