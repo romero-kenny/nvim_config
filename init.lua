@@ -3,14 +3,18 @@ vim.g.mapleader = " "
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 12
-vim.opt.wrap = true
+vim.opt.wrap = true 
+vim.opt.breakindent = true
+vim.opt.linebreak = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.termguicolors = true
 vim.opt.smartindent = true
 vim.opt.updatetime = 50
+vim.opt.shiftwidth = 4
 
 --general keybinds
+vim.keymap.set("i", "<leader><leader>", " ")
 vim.keymap.set("n", "<leader>fe", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>bc", vim.cmd.close)
 vim.keymap.set("n", "<leader>lf", vim.cmd.LspZeroFormat)
@@ -18,6 +22,7 @@ vim.keymap.set("n", "q", "<nop>")
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "j", "gj")
 vim.keymap.set("n", "k", "gk")
+vim.keymap.set("n", ".", "<nop>")
 
 --setups lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -73,25 +78,30 @@ require("lazy").setup({
 	{
 		"Exafunction/codeium.vim",
 		config = function()
-			vim.keymap.set('i', '<C-]>', function() return vim.fn['codeium#CycleCompletions'](1) end,
+			vim.g.codeium_disable_bindings = 1
+			vim.keymap.set('i', '<leader>ca', function() return vim.fn['codeium#Accept']() end, { expr = true })
+			vim.keymap.set('i', '<leader>cn', function() return vim.fn['codeium#CycleCompletions'](1) end,
 				{ expr = true })
-			vim.keymap.set('i', '<C-x>', function() return vim.fn['codeium#Clear']() end, { expr = true })
-		end
+			vim.keymap.set('i', '<leader>cp', function() return vim.fn['codeium#CycleCompletions'](-1) end,
+				{ expr = true })
+			vim.keymap.set('i', '<leader>cx', function() return vim.fn['codeium#Clear']() end, { expr = true })
+		end,
 	},
-	{
-		"alexghergh/nvim-tmux-navigation",
-		config = function()
-			require("nvim-tmux-navigation").setup({
-				disable_when_zoomed = false,
-				keybindings = {
-					left = "<C-h>",
-					down = "<C-j>",
-					up = "<C-k>",
-					right = "<C-l>",
-				},
-			})
-		end
-	}
+	-- Only needed if using tmux
+	-- {
+		-- "alexghergh/nvim-tmux-navigation",
+		-- config = function()
+		-- 	require("nvim-tmux-navigation").setup({
+		-- 		disable_when_zoomed = false,
+		-- 		keybindings = {
+		-- 			left = "<C-h>",
+		-- 			down = "<C-j>",
+		-- 			up = "<C-k>",
+		-- 			right = "<C-l>",
+		-- 		},
+		-- 	})
+		-- end
+	-- },
 })
 
 --plugin setups
@@ -146,7 +156,7 @@ end)
 ---typst config changes
 require("lspconfig").typst_lsp.setup({
 	single_file_support = true,
-	filetypes = {"*.typ"},
+	filetypes = { "*.typ" },
 })
 
 lsp.setup() --activates lsp
