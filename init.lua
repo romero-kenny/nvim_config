@@ -14,7 +14,6 @@ vim.opt.updatetime = 50
 vim.opt.shiftwidth = 4
 
 --general keybinds
-vim.keymap.set("i", "<leader><leader>", " ")
 vim.keymap.set("n", "<leader>fe", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>bc", vim.cmd.close)
 vim.keymap.set("n", "<leader>lf", vim.cmd.LspZeroFormat)
@@ -79,12 +78,12 @@ require("lazy").setup({
 		"Exafunction/codeium.vim",
 		config = function()
 			vim.g.codeium_disable_bindings = 1
-			vim.keymap.set('i', '<leader>ca', function() return vim.fn['codeium#Accept']() end, { expr = true })
-			vim.keymap.set('i', '<leader>cn', function() return vim.fn['codeium#CycleCompletions'](1) end,
+			vim.keymap.set('i', '<M-a>', function() return vim.fn['codeium#Accept']() end, { expr = true })
+			vim.keymap.set('i', '<M-l>', function() return vim.fn['codeium#CycleCompletions'](1) end,
 				{ expr = true })
-			vim.keymap.set('i', '<leader>cp', function() return vim.fn['codeium#CycleCompletions'](-1) end,
+			vim.keymap.set('i', '<M-h>', function() return vim.fn['codeium#CycleCompletions'](-1) end,
 				{ expr = true })
-			vim.keymap.set('i', '<leader>cx', function() return vim.fn['codeium#Clear']() end, { expr = true })
+			vim.keymap.set('i', '<M-d>', function() return vim.fn['codeium#Clear']() end, { expr = true })
 		end,
 	},
 	-- Only needed if using tmux
@@ -131,7 +130,6 @@ local cmp = require("cmp")
 cmp.setup({
 	mapping = {
 		["<C-y>"] = cmp.mapping.confirm({ select = true }),
-		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-x>"] = cmp.mapping.close(),
 		["<C-n>"] = cmp.mapping.select_next_item(),
 		["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -143,11 +141,11 @@ local lsp = require("lsp-zero").preset({})
 
 lsp.on_attach(function(client, bufnr)
 	local opts = { buffer = bufnr, remap = false }
-	vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-	vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-	vim.keymap.set("n", "<leader>vd", function() vim.diagnostics.open_float() end, opts)
-	vim.keymap.set("n", "[d", function() vim.diagnostics.goto_next() end, opts)
-	vim.keymap.set("n", "]d", function() vim.diagnostics.goto_prev() end, opts)
+	vim.keymap.set("n", "<leader>gg", function() vim.lsp.buf.definition() end, opts)
+	vim.keymap.set("n", "<leader>gk", function() vim.lsp.buf.hover() end, opts)
+	vim.keymap.set("n", "<leader>gd", function() vim.diagnostics.open_float() end, opts)
+	vim.keymap.set("n", "<leader>gn", function() vim.diagnostics.goto_next() end, opts)
+	vim.keymap.set("n", "<leader>gp", function() vim.diagnostics.goto_prev() end, opts)
 	vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
 	vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
 	vim.keymap.set("n", "<leader>vrn", function() vim.lsp.rename() end, opts)
