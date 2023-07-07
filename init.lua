@@ -129,7 +129,7 @@ require("nvim-treesitter.configs").setup({
 local cmp = require("cmp")
 cmp.setup({
 	mapping = {
-		["<C-y>"] = cmp.mapping.confirm({ select = true }),
+		["<Tab>"] = cmp.mapping.confirm({ select = true }),
 		["<C-x>"] = cmp.mapping.close(),
 		["<C-n>"] = cmp.mapping.select_next_item(),
 		["<C-p>"] = cmp.mapping.select_prev_item(),
