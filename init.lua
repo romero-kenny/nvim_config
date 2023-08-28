@@ -3,7 +3,7 @@ vim.g.mapleader = " "
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 12
-vim.opt.wrap = true 
+vim.opt.wrap = true
 vim.opt.breakindent = true
 vim.opt.linebreak = true
 vim.opt.hlsearch = false
@@ -86,30 +86,99 @@ require("lazy").setup({
 			vim.keymap.set('i', '<M-d>', function() return vim.fn['codeium#Clear']() end, { expr = true })
 		end,
 	},
+	-- Trying out telekastan.nvim instead, and making it fully intergratable with neovim
+	-- {
+	-- 	"epwalsh/obsidian.nvim",
+	-- 	lazy = false,
+	-- 	event = { "BufReadPre /Users/kenny/ken_drive/mind_attackz/*.md" },
+	-- 	-- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand':
+	-- 	-- event = { "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md" },
+	-- 	dependencies = {
+	-- 		-- Required.
+	-- 		"nvim-lua/plenary.nvim",
+
+	-- 		-- see below for full list of optional dependencies 👇
+	-- 	},
+	-- 	opts = {
+	-- 		dir = "/Users/kenny/ken_drive/mind_attackz", -- no need to call 'vim.fn.expand' here
+
+	-- 		-- see below for full list of options 👇
+	-- 	},
+	-- },
 	-- Only needed if using tmux
 	-- {
-		-- "alexghergh/nvim-tmux-navigation",
-		-- config = function()
-		-- 	require("nvim-tmux-navigation").setup({
-		-- 		disable_when_zoomed = false,
-		-- 		keybindings = {
-		-- 			left = "<C-h>",
-		-- 			down = "<C-j>",
-		-- 			up = "<C-k>",
-		-- 			right = "<C-l>",
-		-- 		},
-		-- 	})
-		-- end
+	-- "alexghergh/nvim-tmux-navigation",
+	-- config = function()
+	-- 	require("nvim-tmux-navigation").setup({
+	-- 		disable_when_zoomed = false,
+	-- 		keybindings = {
+	-- 			left = "<C-h>",
+	-- 			down = "<C-j>",
+	-- 			up = "<C-k>",
+	-- 			right = "<C-l>",
+	-- 		},
+	-- 	})
+	-- end
 	-- },
+	{
+		'renerocksai/telekasten.nvim',
+		dependencies = {
+			'nvim-telescope/telescope.nvim',
+			'nvim-lua/popup.nvim',
+			'nvim-lua/plenary.nvim',
+			'nvim-telescope/telescope-media-files.nvim',
+			'renerocksai/calendar-vim', }
+	},
+
+	{
+		"iamcco/markdown-preview.nvim",
+		config = function()
+			vim.fn["mkdp#util#install"]()
+		end,
+	},
+
 })
 
 --plugin setups
 require("mason").setup() -- for lsp manager
 
+---keybinds and initilization for telekasten
+
+---- Base Setup
+require('telekasten').setup({
+	home = vim.fn.expand("~/ken_drive/mind_freeze"),
+	subdirs_in_links = false,
+})
+
+vim.keymap.set("n", "<leader>tt", vim.cmd.Telekasten, {})
+vim.keymap.set("n", "<leader>tli", "<cmd>Telekasten insert_link<CR>")
+vim.keymap.set("n", "<leader>tlf", "<cmd>Telekasten follow_link<CR>")
+vim.keymap.set("n", "<leader>tnn", "<cmd>Telekasten new_note<CR>")
+vim.keymap.set("n", "<leader>tnf", "<cmd>Telekasten search_notes<CR>")
+vim.keymap.set("n", "<leader>tnb", "<cmd>Telekasten show_backlinks<CR>")
+vim.keymap.set("n", "<leader>tnc", "<cmd>Telekasten show_calendar<CR>")
+vim.keymap.set("n", "<leader>tcl", "<cmd>Telekasten toggle_todo<CR>")
+vim.keymap.set("n", "<leader>tmp", "<cmd>MarkdownPreview<CR>")
+
+---keybinds for obsidian
+-- vim.keymap.set("n", "<leader>of", vim.cmd.ObsidianFollowLink, {})
+-- vim.keymap.set("n", "<leader>on", vim.cmd.ObsidianNewLink, {})
+-- vim.keymap.set("n", "<leader>os", vim.cmd.ObsidianQuickSwitch, {})
+-- vim.keymap.set("n", "<leader>oo", vim.cmd.ObsidianOpen, {})
+-- vim.keymap.set("n", "<leader>ot", vim.cmd.ObsidianToday, {})
+-- vim.keymap.set("n", "<leader>oy", vim.cmd.ObsidianYesterday, {})
+
 ---keybind for telescope / fuzzyfinder
 local telebuilt = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", telebuilt.find_files, {})
 vim.keymap.set("n", "<leader>gf", telebuilt.git_files, {})
+
+---- loads the media previewer for telescope
+require("telescope").load_extension("media_files")
+
+---telekastan setup
+---- Markdown previewer peek
+-- default config:
 
 ---theme selection
 vim.cmd.colorscheme "base16-da-one-black"
@@ -117,7 +186,7 @@ vim.cmd.colorscheme "base16-da-one-black"
 ---tree sitter configurations
 require("nvim-treesitter.configs").setup({
 	ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "zig" },
-	auto_install = false,
+	auto_install = true,
 	highlight = {
 		enable = true,
 		additional_vim_regex_highlighting = false,
