@@ -12,6 +12,7 @@ vim.opt.termguicolors = true
 vim.opt.smartindent = true
 vim.opt.updatetime = 50
 vim.opt.shiftwidth = 4
+vim.opt.colorcolumn = "80"
 
 --general keybinds
 vim.keymap.set("n", "<leader>fe", vim.cmd.Ex)
@@ -129,14 +130,16 @@ require("lazy").setup({
 			'nvim-telescope/telescope-media-files.nvim',
 			'renerocksai/calendar-vim', }
 	},
-
+	{
+		"ellisonleao/glow.nvim", config = function() require("glow").setup() end
+	},
 	{
 		"iamcco/markdown-preview.nvim",
-		config = function()
+		ft = "markdown",
+		build = function()
 			vim.fn["mkdp#util#install"]()
 		end,
 	},
-
 })
 
 --plugin setups
@@ -146,7 +149,7 @@ require("mason").setup() -- for lsp manager
 
 ---- Base Setup
 require('telekasten').setup({
-	home = vim.fn.expand("~/ken_drive/mind_freeze"),
+	home = vim.fn.expand("~/ken_drive/mind_vault"),
 	subdirs_in_links = false,
 })
 
@@ -158,7 +161,7 @@ vim.keymap.set("n", "<leader>tnf", "<cmd>Telekasten search_notes<CR>")
 vim.keymap.set("n", "<leader>tnb", "<cmd>Telekasten show_backlinks<CR>")
 vim.keymap.set("n", "<leader>tnc", "<cmd>Telekasten show_calendar<CR>")
 vim.keymap.set("n", "<leader>tcl", "<cmd>Telekasten toggle_todo<CR>")
-vim.keymap.set("n", "<leader>tmp", "<cmd>MarkdownPreview<CR>")
+vim.keymap.set("n", "<leader>tp", "<cmd>Glow<CR>")
 
 ---keybinds for obsidian
 -- vim.keymap.set("n", "<leader>of", vim.cmd.ObsidianFollowLink, {})
@@ -219,11 +222,5 @@ lsp.on_attach(function(client, bufnr)
 	vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
 	vim.keymap.set("n", "<leader>vrn", function() vim.lsp.rename() end, opts)
 end)
-
----typst config changes
-require("lspconfig").typst_lsp.setup({
-	single_file_support = true,
-	filetypes = { "*.typ" },
-})
 
 lsp.setup() --activates lsp
