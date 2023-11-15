@@ -41,11 +41,6 @@ vim.opt.rtp:prepend(lazypath)
 --List of plugins for Lazy.nvim
 require("lazy").setup({
 	{
-		"nvim-telescope/telescope.nvim",
-		tag = "0.1.1",
-		dependencies = { "nvim-lua/plenary.nvim" }
-	},
-	{
 		"RRethy/nvim-base16"
 	},
 	{
@@ -70,8 +65,7 @@ require("lazy").setup({
 			{ 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
 			-- Autocompletion
-			{ 'hrsh7th/nvim-cmp' }, -- Required
-			{ 'hrsh7th/cmp-nvim-lsp' }, -- Required
+			{ 'hrsh7th/nvim-cmp' }, -- Required { 'hrsh7th/cmp-nvim-lsp' }, -- Required
 			{ 'L3MON4D3/LuaSnip' }, -- Required
 		}
 	},
