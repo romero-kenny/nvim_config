@@ -45,7 +45,6 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -67,7 +66,7 @@ require('lazy').setup({
 
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim',  opts = {} },
-  { 'RRethy/nvim-base16' },
+  { 'RRethy/nvim-base16' }, -- theme package
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
   {
@@ -86,6 +85,12 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-media-files.nvim',
       'renerocksai/calendar-vim', }
+  },
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
   },
 
   require 'tjks_auformat',
@@ -113,8 +118,8 @@ vim.o.smartcase = true
 vim.wo.signcolumn = 'yes'
 
 -- Decrease update time
-vim.o.updatetime = 50
-vim.o.timeoutlen = 100
+vim.o.updatetime = 250
+vim.o.timeoutlen = 300
 
 -- My Settings:
 vim.opt.number = true
@@ -124,12 +129,22 @@ vim.opt.wrap = true
 vim.opt.colorcolumn = "80"
 vim.opt.shiftwidth = 4
 vim.opt.linebreak = true
+-- disables auto comments on enter.
+vim.api.nvim_exec([[
+  augroup AutoFormatOptions
+    autocmd!
+    autocmd BufEnter * setlocal formatoptions-=cro
+  augroup END
+]], false)
 
 vim.keymap.set("n", "<leader>fe", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>bc", vim.cmd.close)
 vim.keymap.set("n", "q", "<nop>")
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", ".", "<nop>")
+
+-- set cursor to always be a block
+vim.cmd[[set guicursor=a:block]]
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -410,28 +425,10 @@ cmp.setup {
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping.confirm {
+    ['<Tab>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
   },
   sources = {
     { name = 'nvim_lsp' },
@@ -447,15 +444,15 @@ require('telekasten').setup({
 vim.keymap.set("n", "<leader>nt", vim.cmd.Telekasten, {})
 vim.keymap.set("n", "<leader>nli", "<cmd>Telekasten insert_link<CR>")
 vim.keymap.set("n", "<leader>nlf", "<cmd>Telekasten follow_link<CR>")
-vim.keymap.set("n", "<leader>nnn", "<cmd>Telekasten new_note<CR>")
-vim.keymap.set("n", "<leader>nnf", "<cmd>Telekasten search_notes<CR>")
-vim.keymap.set("n", "<leader>nnb", "<cmd>Telekasten show_backlinks<CR>")
-vim.keymap.set("n", "<leader>nnc", "<cmd>Telekasten show_calendar<CR>")
-vim.keymap.set("n", "<leader>ncl", "<cmd>Telekasten toggle_todo<CR>")
+vim.keymap.set("n", "<leader>nn", "<cmd>Telekasten new_note<CR>")
+vim.keymap.set("n", "<leader>nf", "<cmd>Telekasten search_notes<CR>")
+vim.keymap.set("n", "<leader>nlb", "<cmd>Telekasten show_backlinks<CR>")
+vim.keymap.set("n", "<leader>nc", "<cmd>Telekasten show_calendar<CR>")
+vim.keymap.set("n", "<leader>nk", "<cmd>Telekasten toggle_todo<CR>")
 
 require("telescope").load_extension("media_files")
 
-vim.cmd.colorscheme "base16-da-one-black"
+vim.cmd.colorscheme "quiet"
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
