@@ -437,7 +437,7 @@ cmp.setup {
 }
 
 require('telekasten').setup({
-  home = vim.fn.expand("~/ken_drive/mind_vault"),
+  home = vim.fn.expand("~/.the_vault"),
   subdirs_in_links = false,
 })
 
