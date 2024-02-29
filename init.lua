@@ -29,7 +29,6 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
-
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
@@ -65,8 +64,12 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
-  { 'RRethy/nvim-base16' }, -- theme package
+  { 'folke/which-key.nvim',          opts = {} },
+  -- colorschemes package
+  { 'fxn/vim-monochrome' },
+  { 'robertmeta/nofrils' },
+  { 'Biscuit-Colorscheme/nvim' },
+  { 'zaki/zazen' },
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
   {
@@ -92,12 +95,28 @@ require('lazy').setup({
     ft = { "markdown" },
     build = function() vim.fn["mkdp#util#install"]() end,
   },
+  {
+    "toppair/peek.nvim",
+    event = { "VeryLazy" },
+    build = "deno task --quiet build:fast",
+    config = function()
+        require("peek").setup()
+        -- refer to `configuration to change defaults`
+        vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+        vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
+  },
 
   require 'tjks_auformat',
 }, {})
 
 -- [[ Setting options ]]
 
+vim.o.tabstop = 8
+vim.o.softtabstop = 8
+vim.o.shiftwidth = 8
+-- Setting true colors on
+vim.o.termguicolors = true
 -- Set highlight on search
 vim.o.hlsearch = false
 
@@ -144,7 +163,7 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", ".", "<nop>")
 
 -- set cursor to always be a block
-vim.cmd[[set guicursor=a:block]]
+vim.cmd [[set guicursor=a:block]]
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -369,6 +388,8 @@ local servers = {
   clangd = {},
   rust_analyzer = {},
   zls = {},
+  ols = {
+  },
 
   lua_ls = {
     Lua = {
@@ -436,9 +457,13 @@ cmp.setup {
   },
 }
 
+local lhome = vim.fn.expand("~/.the_vault")
+
 require('telekasten').setup({
-  home = vim.fn.expand("~/.the_vault"),
-  subdirs_in_links = false,
+  home = lhome,
+  dailies = lhome .. '/' .. 'daily',
+  weeklies = lhome .. '/' .. 'daily',
+
 })
 
 vim.keymap.set("n", "<leader>nt", vim.cmd.Telekasten, {})
@@ -452,7 +477,11 @@ vim.keymap.set("n", "<leader>nk", "<cmd>Telekasten toggle_todo<CR>")
 
 require("telescope").load_extension("media_files")
 
-vim.cmd.colorscheme "quiet"
+require('peek').setup({
+  filetype = { "md", "markdown", ".md" },
+})
+
+vim.cmd.colorscheme "monochrome"
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
