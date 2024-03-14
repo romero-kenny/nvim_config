@@ -466,7 +466,7 @@ vim.keymap.set("n", "<leader>nk", "<cmd>Telekasten toggle_todo<CR>")
 
 require("telescope").load_extension("media_files")
 
-vim.cmd.colorscheme "monochrome"
+vim.cmd.colorscheme "quiet"
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
