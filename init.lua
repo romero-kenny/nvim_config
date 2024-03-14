@@ -95,17 +95,6 @@ require('lazy').setup({
     ft = { "markdown" },
     build = function() vim.fn["mkdp#util#install"]() end,
   },
-  {
-    "toppair/peek.nvim",
-    event = { "VeryLazy" },
-    build = "deno task --quiet build:fast",
-    config = function()
-        require("peek").setup()
-        -- refer to `configuration to change defaults`
-        vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-        vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
-    end,
-  },
 
   require 'tjks_auformat',
 }, {})
@@ -476,10 +465,6 @@ vim.keymap.set("n", "<leader>nc", "<cmd>Telekasten show_calendar<CR>")
 vim.keymap.set("n", "<leader>nk", "<cmd>Telekasten toggle_todo<CR>")
 
 require("telescope").load_extension("media_files")
-
-require('peek').setup({
-  filetype = { "md", "markdown", ".md" },
-})
 
 vim.cmd.colorscheme "monochrome"
 
