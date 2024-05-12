@@ -236,7 +236,7 @@ vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>t?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader>t<space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader>tb', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>t/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
@@ -244,6 +244,7 @@ vim.keymap.set('n', '<leader>t/', function()
     previewer = false,
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
+vim.keymap.set('n', '<leader>t<leader>', require('telescope.builtin').lsp_workspace_symbols, { desc = 'Search Language Symbols ex. Functions, Variables'})
 
 vim.keymap.set('n', '<leader>tfg', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>tff', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
@@ -377,8 +378,7 @@ local servers = {
   clangd = {},
   rust_analyzer = {},
   zls = {},
-  ols = {
-  },
+  ols = {},
 
   lua_ls = {
     Lua = {
@@ -412,6 +412,9 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+
+vim.cmd [[ autocmd BufRead, BufNewFile *.typ set filetype=typst ]]
+vim.cmd [[ autocmd BufRead, BufNewFile *.typst set filetype=typst ]]
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
@@ -466,7 +469,14 @@ vim.keymap.set("n", "<leader>nk", "<cmd>Telekasten toggle_todo<CR>")
 
 require("telescope").load_extension("media_files")
 
-vim.cmd.colorscheme "quiet"
+vim.filetype.add({
+  filename = {
+      ['.typ'] = 'typst',
+  },
+})
+
+-- On iterm remember to set color contrast to 40 for best results.
+vim.cmd.colorscheme "monochrome"
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
