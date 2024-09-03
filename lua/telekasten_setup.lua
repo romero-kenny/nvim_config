@@ -1,8 +1,12 @@
-local lhome = vim.fn.expand("~/.the_vault")
+local lhome = vim.fn.expand("~/kdrive/notes")
 require('telekasten').setup({
   home = lhome,
   dailies = lhome .. '/' .. 'daily',
-  weeklies = lhome .. '/' .. 'daily',
+  weeklies = lhome .. '/' .. 'weeklies',
+  template_new_note = lhome .. '/' .. 'templates',
+  template_new_daily = lhome .. '/' .. 'templates/template_for_daily',
+  template_new_weekly = lhome .. '/' .. 'templates/weekly_template',
+  templates = lhome .. '/' .. 'templates',
 
 })
 

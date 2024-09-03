@@ -75,6 +75,6 @@ require('lazy').setup({
     build = function() vim.fn["mkdp#util#install"]() end,
   },
   { "stevearc/oil.nvim", opts = {}, },
-
+  'mfussenegger/nvim-dap',
   require 'tjks_auformat',
 }, {})

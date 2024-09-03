@@ -1,6 +1,6 @@
 -- Important Remaps
 ---- neovim default file explorer
-vim.keymap.set("n", "<leader>e", vim.cmd.Oil)
+vim.keymap.set("n", "<leader>e", vim.cmd.Oil, { desc = 'Oil File Browser' })
 ---- Open search for language symbols
 vim.keymap.set('n', '<leader><leader>', require('telescope.builtin').lsp_document_symbols, { desc = 'Search Language Symbols ex. Functions, Variables'})
 ---- Open Telescope Find File
