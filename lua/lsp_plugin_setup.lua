@@ -3,8 +3,6 @@
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
-    -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -74,11 +72,6 @@ require('mason').setup()
 require('mason-lspconfig').setup()
 
 local servers = {
-  clangd = {},
-  rust_analyzer = {},
-  zls = {},
-  ols = {},
-
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -136,7 +129,6 @@ cmp.setup {
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
     ['<C-j>'] = cmp.mapping.confirm {
       select = true,
     },

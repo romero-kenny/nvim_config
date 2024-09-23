@@ -2,9 +2,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.o.tabstop = 8
-vim.o.softtabstop = 8
-vim.o.shiftwidth = 8
 -- Setting true colors on
 vim.o.termguicolors = true
 -- Set highlight on search
@@ -36,15 +33,14 @@ vim.opt.relativenumber = true
 vim.opt.scrolloff = 12
 vim.opt.wrap = true
 vim.opt.colorcolumn = "80"
-vim.opt.shiftwidth = 8
 vim.opt.linebreak = true
 -- disables auto comments on enter.
-vim.api.nvim_exec([[
-  augroup AutoFormatOptions
-    autocmd!
-    autocmd BufEnter * setlocal formatoptions-=cro
-  augroup END
-]], false)
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = '*',
+  callback = function()
+    vim.opt_local.formatoptions:remove({ 'c', 'r', 'o' })
+  end,
+})
 
 -- set cursor to always be a block
 vim.cmd [[set guicursor=a:block]]

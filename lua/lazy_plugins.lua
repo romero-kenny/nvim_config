@@ -45,7 +45,6 @@ require('lazy').setup({
   { 'folke/which-key.nvim',    opts = {} },
   -- colorschemes package
   { 'vim-scripts/zenesque.vim' },
-  { 'Lokaltog/vim-monotone' },
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim',   opts = {} },

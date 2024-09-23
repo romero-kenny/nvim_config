@@ -29,8 +29,7 @@ On_attach = function(_, bufnr)
   nmap('<leader>gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('<leader>gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
   nmap('<leader>gt', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-  nmap('<leader>gD', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-  nmap('<leader>gl', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+  nmap('<leader>gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
   -- Hover Documentation
   nmap('<leader>gk', vim.lsp.buf.hover, 'Hover Documentation')

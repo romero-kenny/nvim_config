@@ -4,11 +4,11 @@ vim.keymap.set("n", "<leader>e", vim.cmd.Oil, { desc = 'Oil File Browser' })
 ---- Open search for language symbols
 vim.keymap.set('n', '<leader><leader>', require('telescope.builtin').lsp_document_symbols, { desc = 'Search Language Symbols ex. Functions, Variables'})
 ---- Open Telescope Find File
-vim.keymap.set('n', '<leader>.', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>;', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 ---- Telescope Grep
-vim.keymap.set('n', '<leader>,', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>?', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 ---- Telescope Search Opened Buffers
-vim.keymap.set('n', '<leader>;', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader>:', require('telescope.builtin').buffers, { desc = '[.] Find existing buffers' })
 ---- Telescope Search Current Buffer
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
@@ -45,7 +45,3 @@ vim.keymap.set('n', '<leader>tg', require('telescope.builtin').git_files, { desc
 vim.keymap.set('n', '<leader>tG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 ---- Telescope Diagnostics Search
 vim.keymap.set('n', '<leader>td', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-
--- Window Keybinds
----- close window
-vim.keymap.set("n", "<leader>x", vim.cmd.close)
